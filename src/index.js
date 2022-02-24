@@ -55,7 +55,11 @@ module.exports = function toReadable (number) {
                     representation.unshift([0, '']);
                 else representation.unshift([digit * 10 ** position, aliases[digit] + ' ' + orders[position]]);
         }
-
+        number = Math.floor(number / 10);
+        position++;
     }
-
+    console.log(representation);
 }
+
+for (let i = 0; i < 100; i++)
+    module.exports(i);
