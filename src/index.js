@@ -24,13 +24,23 @@ module.exports = function toReadable (number) {
       [30, 'thirty'],
       [40, 'forty'],
       [50, 'fifty'],
+      [80, 'eighty']
     ];
+    let alobj = {};
+    aliases.forEach(el => alobj[el[0]] = el);
+    aliases = alobj;
     let orders = [
         'ones',
         'tens',
         'hundred',
         'thousand',
+        'thousand',
+        'thousand',
         'million',
+        'million',
+        'million',
+        'billion',
+        'billion',
         'billion'
     ];
     let representation = [];
@@ -45,7 +55,7 @@ module.exports = function toReadable (number) {
                     let ones = representation.shift();
                     representation.unshift(aliases[10 + ones[0]]);
                 }
-                else if (digit < 6) {
+                else if (aliases[10 * digit] !== undefined) {
                     representation.unshift(aliases[10 * digit]);
                 }
                 else representation.unshift([10 * digit, aliases[digit][1] + 'ty']);
@@ -53,13 +63,13 @@ module.exports = function toReadable (number) {
             default:
                 if (digit === 0)
                     representation.unshift([0, '']);
-                else representation.unshift([digit * 10 ** position, aliases[digit] + ' ' + orders[position]]);
+                else representation.unshift([digit * 10 ** position, aliases[digit][1] + ' ' + orders[position]]);
         }
         number = Math.floor(number / 10);
         position++;
     }
-    console.log(representation);
+    representation = representation.map(el => el[1]).filter(el => el !== '').join(' ');
+    if (representation === '')
+        return 'zero';
+    return representation;
 }
-
-for (let i = 0; i < 100; i++)
-    module.exports(i);
